@@ -28,6 +28,10 @@ function App() {
     setCurrentGoal(updatedGoal);
   };
 
+  const handleReset = () => {
+    setCurrentGoal(null);
+};
+
   return (
     <div className="App">
 
@@ -39,6 +43,7 @@ function App() {
         <Tracker
           goalData={currentGoal}
           onLog={handleLogSession}
+          onReset={handleReset}
         />
       )}
 

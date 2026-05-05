@@ -4,7 +4,7 @@ import leg2 from '../assets/leg2.png';
 import leg3 from '../assets/leg3.png';
 import leg4 from '../assets/leg4.png';
 
-const Tracker = ({ goalData, onLog }) => {  // Functional component that takes in goalData and onLog as props. goalData contains the current goal and completed sessions, while onLog is a function to log a new session when the button is clicked.
+const Tracker = ({ goalData, onLog, onReset }) => {  // Functional component that takes in goalData and onLog as props. goalData contains the current goal and completed sessions, while onLog is a function to log a new session when the button is clicked.
     const { goal, completedSessions } = goalData; // Destructuring the goal and completedSessions from the goalData prop for easier access.
 
     const percentage = goal 
@@ -46,20 +46,39 @@ const Tracker = ({ goalData, onLog }) => {  // Functional component that takes i
                     border: '1px solid #333'
                 }}
             >
-                <div
-                    style={{
-                        background: 'linear-gradient(90deg, #22c55e, #16a34a)',
-                        width: `${cappedPercentage}%`,
-                        height: '100%',
-                        borderRadius: '999px',
-                        transition: 'width 0.4s ease'
-                    }}
+            <div
+                style={{
+                    background: 'linear-gradient(90deg, #22c55e, #16a34a)',
+                    width: `${cappedPercentage}%`,
+                    height: '100%',
+                    borderRadius: '999px',
+                    transition: 'width 0.4s ease'
+                }}
                 />
             </div>
 
-            <button onClick={onLog}>
-                Log Session 💪
-            </button>
+        {completedSessions >= goal ? (
+            <p style={{ color: '#22c55e', fontWeight: 'bold', fontSize: '1.2rem' }}>
+                🎉 Goal complete! Legendary legs achieved!
+            </p>
+        ) : (
+            <button onClick={onLog}>Log Session 💪</button>
+        )}
+
+        <button
+            onClick={onReset}
+            style={{
+                marginTop: '12px',
+                background: 'transparent',
+                border: '1px solid #444',
+                color: '#aaaaaa',
+                fontSize: '0.85rem',
+                padding: '8px',
+            }}
+        >
+            Reset Goal
+        </button>
+
         </div>
     );
 }

@@ -20,3 +20,4 @@ export const fetchGoal = async () => { // Function to fetch the current goal dat
     if (response.status === 404) return null;
     return response.json();
 };
+
