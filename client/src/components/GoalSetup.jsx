@@ -11,7 +11,7 @@ const GoalSetup = ({ onSubmit }) => { // Component for setting up the user's leg
         setGoal(""); // Reset the input field after submission
 
     }
-
+    
     return (
         <div>
             <h2>Set Your Leg Day Goal</h2>
