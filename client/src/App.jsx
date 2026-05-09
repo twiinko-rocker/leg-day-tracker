@@ -1,10 +1,13 @@
-import { useState, useEffect, use } from "react"; // React hook for managing state in the component
+import { useState, useEffect } from "react"; // React hook for managing state in the component
 import GoalSetup from "./components/GoalSetup"; // Component for setting up the leg day goal, likely includes a form for user input
 import Tracker from "./components/Tracker";
-import { createGoal, fetchGoal, logSession } from "./api"; // Function to send the goal data to the backend API, defined in api.js, which handles the POST request to save the goal in the database
+import { checkPassword, createGoal, fetchGoal, logSession } from "./api"; // Function to send the goal data to the backend API, defined in api.js, which handles the POST request to save the goal in the database
 
 function App() {
   const [currentGoal, setCurrentGoal] = useState(null); // State variable to hold the current leg day goal, initialized to null (no goal set)
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
 
   useEffect(() => { // React hook that runs after the component mounts, used to fetch the current goal from the backend API when the app loads
     const loadGoal = async () => {
@@ -16,6 +19,15 @@ function App() {
 
     loadGoal();
   }, []);
+
+  const handleLogin = async () => {
+    const result = await checkPassword(password);
+    if (result.success) {
+      setIsAuthenticated(true);
+    } else {
+      alert(result.message);
+    }
+  };
 
   const handleGoalSubmit = async (goal) => { // Function to handle the submission of the goal from the GoalSetup component
     const savedGoal = await createGoal(goal); // Calls the createGoal function to send the goal to the backend and waits for the response, which should contain the saved goal data
@@ -36,8 +48,21 @@ function App() {
     <div className="App">
 
       <h1>Leg Day Tracker 🦵</h1>
-
-      {!currentGoal ? (
+      {!isAuthenticated ? (
+        <div>
+          <h2>Enter Password</h2>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+            placeholder="Password"
+          />
+          <button onClick={handleLogin}>
+            Login
+          </button>
+        </div>
+      ) : !currentGoal ? (
         <GoalSetup onSubmit={handleGoalSubmit} />
       ) : (
         <Tracker

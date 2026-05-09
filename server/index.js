@@ -20,12 +20,25 @@ mongoose.connect(process.env.MONGODB_URI)
 
 const PORT = process.env.PORT || 3000;
 
+
 // Routes
 app.get('/', (req, res) => {
     res.send('Leg Day Tracker API is running');
+});
+
+// Authentication route
+
+app.post('/api/auth', (req, res) => {
+    const { password } = req.body;
+    if (password === process.env.APP_PASSWORD) {
+        res.json({ success: true });
+    } else {
+        res.status(401).json({ success: false, message: 'Wrong password' });
+    }
 });
 
 // Start server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
