@@ -26,6 +26,7 @@ function App() {
       setIsAuthenticated(true);
     } else {
       alert(result.message);
+      setPassword("");
     }
   };
 
