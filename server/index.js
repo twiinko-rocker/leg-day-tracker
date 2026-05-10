@@ -2,12 +2,17 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import goalRoutes from './routes/goal.js'; // Import the goal routes
+import cors from 'cors';
 
 
 // Load environment variables FIRST
 dotenv.config();
 
 const app = express();
+
+app.use(cors({
+    origin: 'https://tw-leg-day-tracker.netlify.app/'
+}))
 
 // Middleware (you’ll need this soon for PaOST requests)
 app.use(express.json());
