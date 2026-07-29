@@ -19,6 +19,12 @@ const Tracker = ({ goalData, onLog, onReset }) => {  // Functional component tha
         return leg4;
     };
 
+    const getBarColor = (percentage) => {
+        if  (percentage <= 35) return "#ef4444"; // Red for 0-35%
+        if  (percentage <= 80) return "#eab308"; // Yellow for 36-70%
+        return "#22c55e"; // Green for 71-100%
+    }
+
 
     return ( // JSX to render the tracker UI, displaying the goal, completed sessions, a progress bar, and a button to log new sessions.
         <div>
@@ -38,6 +44,7 @@ const Tracker = ({ goalData, onLog, onReset }) => {  // Functional component tha
             {/* Progress Bar */}
             <div
                 style={{
+                    position: 'relative',
                     background: '#1a1a1a',
                     borderRadius: '999px',
                     height: '16px',
@@ -46,16 +53,22 @@ const Tracker = ({ goalData, onLog, onReset }) => {  // Functional component tha
                     border: '1px solid #333'
                 }}
             >
-            <div
-                style={{
-                    background: 'linear-gradient(90deg, #22c55e, #16a34a)',
-                    width: `${cappedPercentage}%`,
-                    height: '100%',
-                    borderRadius: '999px',
-                    transition: 'width 0.4s ease'
-                }}
+                <div
+                    style={{
+                        background: `linear-gradient(90deg, ${getBarColor(cappedPercentage)}, ${getBarColor(cappedPercentage)})`,
+                        width: `${cappedPercentage}%`,
+                        height: '100%',
+                        borderRadius: '999px',
+                        transition: 'width 0.4s ease'
+                    }}
                 />
             </div>
+
+            {/*Percentage Text */}
+
+            <p style={{ textAlign: 'right', fontWeight: 'bold', fontSize: '0.85rem', color:'#aaa' }}>
+                {cappedPercentage.toFixed(0)}%
+            </p>
 
         {completedSessions >= goal ? (
             <p style={{ color: '#22c55e', fontWeight: 'bold', fontSize: '1.2rem' }}>
