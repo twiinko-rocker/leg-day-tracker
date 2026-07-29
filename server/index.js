@@ -11,8 +11,8 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: 'https://tw-leg-day-tracker.netlify.app'
-}))
+    origin: ['https://tw-leg-day-tracker.netlify.app', 'http://localhost:5173']
+}));
 
 // Middleware (you’ll need this soon for PaOST requests)
 app.use(express.json());
