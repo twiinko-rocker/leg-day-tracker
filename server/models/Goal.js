@@ -9,10 +9,19 @@ const goalSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    sessions:[
+        {
+            date: {
+                type: Date,
+                default: Date.now,
+            },
+        }
+    ],
     createdAt: {
         type: Date,
         default: Date.now,
     },
+
 });
 
 export default mongoose.model('Goal', goalSchema);
