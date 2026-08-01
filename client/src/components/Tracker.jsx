@@ -4,8 +4,8 @@ import leg2 from '../assets/leg2.png';
 import leg3 from '../assets/leg3.png';
 import leg4 from '../assets/leg4.png';
 
-const Tracker = ({ goalData, onLog, onReset }) => {  // Functional component that takes in goalData and onLog as props. goalData contains the current goal and completed sessions, while onLog is a function to log a new session when the button is clicked.
-    const { goal, completedSessions } = goalData; // Destructuring the goal and completedSessions from the goalData prop for easier access.
+const Tracker = ({ goalData, onLog, onReset, onDeleteSession }) => {  // Functional component that takes in goalData and onLog as props. goalData contains the current goal and completed sessions, while onLog is a function to log a new session when the button is clicked.
+    const { goal, completedSessions, sessions } = goalData; // Destructuring the goal and completedSessions from the goalData prop for easier access.
 
     const percentage = goal 
         ? (completedSessions / goal) * 100 
@@ -75,7 +75,15 @@ const Tracker = ({ goalData, onLog, onReset }) => {  // Functional component tha
                 🎉 Goal complete! Legendary legs achieved!
             </p>
         ) : (
-            <button onClick={onLog}>Log Session 💪</button>
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
+                <button onClick={onLog}>Log Session 💪</button>
+                <button 
+                    onClick={onDeleteSession}
+                    disabled={sessions.length === 0} // Disable the button if there are no completed sessions to delete
+                >
+                    Delete Last Session ❌
+                </button>
+            </div>
         )}
 
         <button

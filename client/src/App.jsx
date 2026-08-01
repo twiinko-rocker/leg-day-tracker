@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"; // React hook for managing state in
 import GoalSetup from "./components/GoalSetup"; // Component for setting up the leg day goal, likely includes a form for user input
 import Tracker from "./components/Tracker";
 import { checkPassword, createGoal, fetchGoal, logSession } from "./api"; // Function to send the goal data to the backend API, defined in api.js, which handles the POST request to save the goal in the database
+import SessionHistory from "./components/SessionHistory"; // Component for displaying the history of completed leg day sessions, likely includes a list of past sessions and their dates  
 
 function App() {
   const [currentGoal, setCurrentGoal] = useState(null); // State variable to hold the current leg day goal, initialized to null (no goal set)
@@ -40,6 +41,10 @@ function App() {
     const updatedGoal = await logSession();
     setCurrentGoal(updatedGoal);
   };
+  
+  const handleDeleteSession = async () => {
+  // Day 2: implement this
+};
 
   const handleReset = () => {
     setCurrentGoal(null);
@@ -66,11 +71,17 @@ function App() {
       ) : !currentGoal ? (
         <GoalSetup onSubmit={handleGoalSubmit} />
       ) : (
-        <Tracker
-          goalData={currentGoal}
-          onLog={handleLogSession}
-          onReset={handleReset}
-        />
+        <div>
+          <Tracker
+            goalData={currentGoal}
+            onLog={handleLogSession}
+            onReset={handleReset}
+            onDeleteSession={handleDeleteSession}
+          />
+          <SessionHistory 
+            sessions={currentGoal.sessions}
+          />
+        </div>
       )}
 
     </div>
