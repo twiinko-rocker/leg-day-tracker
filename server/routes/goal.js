@@ -41,6 +41,7 @@ router.patch("/log", async (req, res) => {
             return res.status(404).json({ error: "No goal found" }); // Return a 404 status if no goal is found
         }
         currentGoal.completedSessions += 1; // Increment the completed sessions
+        currentGoal.sessions.push({ date: new Date() }); // Add a new session with the current date
         const updatedGoal = await currentGoal.save(); // Save the updated goal to the database
         res.status(200).json(updatedGoal); // Return the updated goal with a 200 status
     } catch (err) {
