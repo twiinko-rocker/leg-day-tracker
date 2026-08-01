@@ -50,6 +50,33 @@ router.patch("/log", async (req, res) => {
     }   
 })
 
+router.get("/sessions", async (req, res) => {
+    try {
+        const currentGoal = await Goal.findOne().sort({ createdAt: -1 }); // Get the most recent goal
+        if (!currentGoal) {
+            return res.status(404).json({ error: "No goal found" }); // Return a 404 status if no goal is found
+        }
+        res.status(200).json(currentGoal.sessions); // Return the sessions of the current goal with a 200 status
+    } catch (err) {
+        console.error("Error fetching sessions:", err);
+        res.status(500).json({ error: "Server error" }); // Return a 500 status on error
+    }
+})
 
+router.delete("/sessions/latest", async (req, res) => {
+    try {
+        const latestSession = await Goal.findOne().sort({ createdAt: -1 }); // Get the most recent goal
+        if (!latestSession || latestSession.sessions.length === 0) {
+            return res.status(400).json({ error: "No session found to delete" }); // Return a 404 status if no session is found
+        }
+        latestSession.sessions.pop(); // Remove the last session
+        latestSession.completedSessions = Math.max(0, latestSession.completedSessions - 1); // Decrement completed sessions but not below 0
+        const updatedGoal = await latestSession.save(); // Save the updated goal to the database
+        res.status(200).json(updatedGoal); // Return the updated goal with a 200 status 
+    } catch (err) {
+        console.error("Error deleting session:", err);
+        res.status(500).json({ error: "Server error" }); // Return a 500 status on error
+    }
+})
 
 export default router; // Export the router to be used in index.js
